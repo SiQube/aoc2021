@@ -17,8 +17,17 @@ fn compute_part1(filename: &str) -> i32 {
     return hor * dpt;
 }
 
-fn compute_part2(_filename: &str) -> i32 {
-    return 0;
+fn compute_part2(filename: &str) -> i32 {
+    let (hor, dpt, _) = filename.lines().map(|l| l.split_once(" ").unwrap()).fold(
+        (0, 0, 0),
+        |(h, d, a), (k, v)| match (k, v.parse::<i32>().unwrap()) {
+            ("forward", v) => (h + v, d + a * v, a),
+            ("down", v) => (h, d, a + v),
+            ("up", v) => (h, d, a - v),
+            _ => unreachable!(),
+        },
+    );
+    return hor * dpt;
 }
 
 pub fn main() {
@@ -31,7 +40,7 @@ pub fn main() {
         println!("expected {} got {}", test_expected_part1, test_result_part1);
     };
     println!("+++ part 2");
-    let test_expected_part2: i32 = 0;
+    let test_expected_part2: i32 = 900;
     let test_result_part2 = compute_part2(TEST_STR);
     if test_result_part2 == test_expected_part2 {
         println!("{}", compute_part2(INPUT_STR));
