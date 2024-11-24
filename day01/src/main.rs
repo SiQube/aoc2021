@@ -16,8 +16,17 @@ fn compute_part1(filename: &str) -> i32 {
     return result;
 }
 
-fn compute_part2(_filename: &str) -> i32 {
-    return 0;
+fn compute_part2(filename: &str) -> i32 {
+    let result: i32 = filename
+        .lines()
+        .map(|n| n.parse().unwrap())
+        .collect::<Vec<u16>>()
+        .array_windows()
+        .filter(|[a, _, _, b]| a < b)
+        .count()
+        .try_into()
+        .unwrap();
+    return result;
 }
 
 pub fn main() {
@@ -30,7 +39,7 @@ pub fn main() {
         println!("expected {} got {}", test_expected_part1, test_result_part1);
     };
     println!("+++ part 2");
-    let test_expected_part2: i32 = 0;
+    let test_expected_part2: i32 = 5;
     let test_result_part2 = compute_part2(TEST_STR);
     if test_result_part2 == test_expected_part2 {
         println!("{}", compute_part2(INPUT_STR));
